@@ -1,55 +1,28 @@
-.container {
-    padding: 40px; /* Increase padding */
-    position: relative;
-    text-align: center; /* Center text in the container */
-  }
-  
-  .friend-header {
-    font-size: 98px; /* Increase font size */
-    margin-bottom: 40px; /* Increase margin to separate from the grid */
-  }
-  
-  .grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .buttonsContainer {
-    margin-top: 40px; /* Increase margin */
-    display: flex;
-    justify-content: center;
-    gap: 40px; /* Increase gap */
-  }
-  
-  .greenButton, .redButton {
-    padding: 30px 60px; /* Increase padding */
-    border: 3px solid; /* Increase border width */
+.greenButton {
+    background-color: rgb(110, 236, 110); /* Light green unhovered state */
+    border: 3px solid green;
     border-radius: 10px;
-    background-color: white;
-    color: black;
-    font-size: 24px; /* Increase font size */
-    cursor: pointer;
+    color: white;
+    font-size: 50px; 
+    padding: 36px 72px; /* Increase padding */
     transition: background-color 0.3s ease;
   }
   
-  .greenButton {
-    border-color: green;
-    background-color: lightgreen;
-    color: white;
-  }
-  
   .greenButton:hover {
-    background-color: green;
+    background-color: green; /* Dark green hovered state */
   }
   
   .redButton {
-    border-color: red;
-    background-color: lightcoral;
+    background-color: lightcoral; /* Light red unhovered state */
+    border: 3px solid red;
+    border-radius: 10px;
     color: white;
+    font-size: 50px; 
+    padding: 36px 72px;
+    transition: background-color 0.3s ease;
   }
   
   .redButton:hover {
-    background-color: red;
+    background-color: darkred; /* Dark red hovered state */
   }
   
