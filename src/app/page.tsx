@@ -1,12 +1,19 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { friends, Friend } from '../app/lib/data';
+import { supabase } from '../app/lib/supabaseClient';
 import ProfileCard from '../app/components/ProfileCard';
 import SelectFriend from '../app/components/SelectFriend';
 import LogoutButton from '../app/components/LogoutButton';
 import NotificationModal from '../app/components/NotificationModal';
 import styles from '../app/styles/Home.module.css';
+
+interface Friend {
+  id: number;
+  name: string;
+  image: string;
+  available: boolean;
+}
 
 interface FriendWithStatus extends Friend {
   status: 'available' | 'unavailable';
@@ -15,31 +22,56 @@ interface FriendWithStatus extends Friend {
 export default function Home() {
   const [selectedFriend, setSelectedFriend] = useState<FriendWithStatus | null>(null);
   const [loading, setLoading] = useState(true);
+  const [friends, setFriends] = useState<Friend[]>([]);
   const [friendsStatus, setFriendsStatus] = useState<{ [key: string]: 'available' | 'unavailable' }>({});
   const [notification, setNotification] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchFriends = async () => {
+      const { data, error } = await supabase
+        .from('friends')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching friends:', error);
+      } else {
+        setFriends(data || []);
+        const initialStatus = data?.reduce((acc, friend) => {
+          acc[friend.id] = friend.available ? 'available' : 'unavailable';
+          return acc;
+        }, {} as { [key: string]: 'available' | 'unavailable' });
+        setFriendsStatus(initialStatus || {});
+      }
+    };
+
+    fetchFriends();
+
     const storedFriend = localStorage.getItem('selectedFriend');
     if (storedFriend) {
       setSelectedFriend(JSON.parse(storedFriend));
     }
     setLoading(false);
 
-    const eventSource = new EventSource('/api/events');
-
-    eventSource.onmessage = (event) => {
-      console.log('GOT event', event);
-      const updatedStatus = JSON.parse(event.data);
-      setFriendsStatus(updatedStatus);
-    };
+    // Subscribe to Supabase real-time updates
+    const subscription = supabase
+      .channel('friends')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'friends' }, (payload) => {
+        console.log("UPDATE!", payload)
+        const updatedFriend = payload.new;
+        setFriendsStatus((prevStatus) => ({
+          ...prevStatus,
+          [updatedFriend.id]: updatedFriend.available ? 'available' : 'unavailable',
+        }));
+      })
+      .subscribe();
 
     return () => {
-      eventSource.close();
+      supabase.removeChannel(subscription);
     };
   }, []);
 
   const handleSelectFriend = (friend: Friend) => {
-    const friendWithStatus = { ...friend, status: 'available' as 'available' | 'unavailable' };
+    const friendWithStatus: FriendWithStatus = { ...friend, status: friend.available ? 'available' : 'unavailable' };
     setSelectedFriend(friendWithStatus);
     localStorage.setItem('selectedFriend', JSON.stringify(friendWithStatus));
   };
@@ -54,19 +86,15 @@ export default function Home() {
       const updatedFriend = { ...selectedFriend, status };
       setSelectedFriend(updatedFriend);
       localStorage.setItem('selectedFriend', JSON.stringify(updatedFriend));
-      console.log('POST event', { id: selectedFriend.id, status });
+      console.log('POST event', { id: selectedFriend.id, available: status === 'available' });
 
-      await fetch('/api/status', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: selectedFriend.id, status }),
-      });
+      await supabase
+        .from('friends')
+        .update({ available: status === 'available' })
+        .eq('id', selectedFriend.id);
 
       // Show notification
-      const msgStatus = status === 'available' ? 'esta manija' : 'nos abandona';
-      setNotification(`${selectedFriend.name} ${msgStatus}`);
+      setNotification(`${selectedFriend.name} is ${status.toUpperCase()}`);
       setTimeout(() => setNotification(null), 3000);
     }
   };
