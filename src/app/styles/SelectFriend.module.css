@@ -1,0 +1,64 @@
+/* src/app/styles/SelectFriend.module.css */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  background: #4f4848; /* Light gray background */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.friendsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.friendCard {
+  cursor: pointer;
+  padding: 10px;
+  border: 2px solid transparent;
+}
+
+.friendCard img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.selected {
+  border-color: green; /* Green border for the selected friend */
+  border-width: 4px; /* Increase border width for better visibility */
+}
+
+.confirmButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: 2px solid black; /* Black border for the button */
+  border-radius: 5px; /* Rounded corners */
+  background-color: white; /* White background */
+  color: black; /* Black text color */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.confirmButton:hover {
+  background-color: lightgray; /* Light gray background on hover */
+}
+
+.confirmButton:disabled {
+  border-color: gray; /* Gray border when disabled */
+  color: gray; /* Gray text color when disabled */
+  cursor: not-allowed; /* Not allowed cursor when disabled */
+}

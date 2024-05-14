@@ -1,0 +1,55 @@
+.container {
+    padding: 40px; /* Increase padding */
+    position: relative;
+    text-align: center; /* Center text in the container */
+  }
+  
+  .friend-header {
+    font-size: 98px; /* Increase font size */
+    margin-bottom: 40px; /* Increase margin to separate from the grid */
+  }
+  
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .buttonsContainer {
+    margin-top: 40px; /* Increase margin */
+    display: flex;
+    justify-content: center;
+    gap: 40px; /* Increase gap */
+  }
+  
+  .greenButton, .redButton {
+    padding: 30px 60px; /* Increase padding */
+    border: 3px solid; /* Increase border width */
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    font-size: 24px; /* Increase font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .greenButton {
+    border-color: green;
+    background-color: lightgreen;
+    color: white;
+  }
+  
+  .greenButton:hover {
+    background-color: green;
+  }
+  
+  .redButton {
+    border-color: red;
+    background-color: lightcoral;
+    color: white;
+  }
+  
+  .redButton:hover {
+    background-color: red;
+  }
+  

@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; /* Increase padding */
+  border: 4px solid transparent; /* Increase border width */
+  border-radius: 10px;
+  margin: 20px; /* Increase margin */
+}
+
+.card img {
+  border-radius: 50%;
+  width: 150px; /* Increase image size */
+  height: 150px; /* Increase image size */
+}
+
+.available {
+  border-color: green;
+}
+
+.unavailable {
+  border-color: red;
+}
+
+.statusDot {
+  width: 20px; /* Increase dot size */
+  height: 20px; /* Increase dot size */
+  border-radius: 50%;
+  margin-top: 10px; /* Increase margin */
+  background-color: currentColor;
+}
+
+.available .statusDot {
+  background-color: green;
+}
+
+.unavailable .statusDot {
+  background-color: red;
+}
