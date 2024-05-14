@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { onStatusChange } from '../../lib/statusEmitter';
 
+export const config = {
+  runtime: 'edge',
+};
+
 export function GET(req: NextRequest) {
   const stream = new ReadableStream({
     start(controller) {
@@ -19,8 +23,8 @@ export function GET(req: NextRequest) {
   return new NextResponse(stream, {
     headers: {
       'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive'
+      'Cache-Control': 'no-cache, no-transform',
+      'Connection': 'keep-alive',
     }
   });
 }
