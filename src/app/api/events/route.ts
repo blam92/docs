@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { onStatusChange } from '../../lib/statusEmitter';
 
-export const config = {
-  runtime: 'edge',
-};
+export const runtime = 'edge';
 
 export function GET(req: NextRequest) {
   const stream = new ReadableStream({
