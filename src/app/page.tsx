@@ -27,6 +27,11 @@ export default function Home() {
 
     const eventSource = new EventSource('/api/events');
 
+    eventSource.onerror = (error) => {
+      console.error('EventSource failed:', error);
+      eventSource.close();
+    };
+    
     eventSource.onmessage = (event) => {
       console.log('GOT event', event);
       const updatedStatus = JSON.parse(event.data);
