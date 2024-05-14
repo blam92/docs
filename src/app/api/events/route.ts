@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { onStatusChange } from '../../lib/statusEmitter';
 
-export const runtime = 'edge';
+export const runtime = process.env.NODE_ENV === 'production' ? 'edge' : 'node';
 
 export function GET(req: NextRequest) {
   const stream = new ReadableStream({
