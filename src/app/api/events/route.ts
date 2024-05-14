@@ -1,21 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { EventEmitter } from 'events';
-
-const eventEmitter = new EventEmitter();
+import { onStatusChange } from '../../lib/statusEmitter';
 
 export function GET(req: NextRequest) {
   const stream = new ReadableStream({
     start(controller) {
-      const onStatusChange = (status: any) => {
-        console.log('on sstatus change', status);
+      const onStatusChangeCallback = (status: any) => {
         controller.enqueue(`data: ${JSON.stringify(status)}\n\n`);
       };
 
-      eventEmitter.on('statusChange', onStatusChange);
+      onStatusChange(onStatusChangeCallback);
 
       req.signal.addEventListener('abort', () => {
-        console.log('aborted');
-        eventEmitter.removeListener('statusChange', onStatusChange);
         controller.close();
       });
     }
@@ -28,8 +23,4 @@ export function GET(req: NextRequest) {
       'Connection': 'keep-alive'
     }
   });
-}
-
-export function emitStatusChange(status: any) {
-  eventEmitter.emit('statusChange', status);
 }
