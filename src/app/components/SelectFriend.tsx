@@ -3,6 +3,7 @@
 import { FC, useState } from 'react';
 import { friends, Friend } from '../lib/data';
 import styles from '../styles/SelectFriend.module.css';
+import Image from 'next/image';
 
 interface SelectFriendProps {
   onSelect: (friend: Friend) => void;
@@ -28,7 +29,13 @@ const SelectFriend: FC<SelectFriendProps> = ({ onSelect }) => {
         <div className={styles.friendsList}>
           {friends.map(friend => (
             <div key={friend.id} className={`${styles.friendCard} ${selectedFriend?.id === friend.id ? styles.selected : ''}`} onClick={() => handleSelect(friend)}>
-              <img src={friend.image} alt={friend.name} />
+              <Image
+                src={friend.image}
+                alt={friend.name}
+                width={100}
+                height={100}
+                className={styles.image}
+              />
               <p>{friend.name}</p>
             </div>
           ))}

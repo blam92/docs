@@ -9,10 +9,8 @@
   margin: 20px; /* Increase margin */
 }
 
-.card img {
+.image {
   border-radius: 50%;
-  width: 150px; /* Increase image size */
-  height: 150px; /* Increase image size */
 }
 
 .available {
